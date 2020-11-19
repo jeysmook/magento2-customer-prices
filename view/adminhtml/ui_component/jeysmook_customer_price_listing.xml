@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Customer Prices for Magento 2
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">jeysmook_customer_price_listing.jeysmook_customer_price_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="add">
+                <url path="*/*/new"/>
+                <class>primary</class>
+                <label translate="true">Add</label>
+            </button>
+        </buttons>
+        <spinner>jeysmook_customer_price_columns</spinner>
+        <deps>
+            <dep>jeysmook_customer_price_listing.jeysmook_customer_price_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="jeysmook_customer_price_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">item_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Jeysmook_CustomerPrices::customer_price</aclResource>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="jeysmook_customer_price_listing_data_source">
+            <settings>
+                <requestFieldName>item_id</requestFieldName>
+                <primaryFieldName>item_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="jeysmook_customer_price_columns">
+        <column name="item_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="product_id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Product ID</label>
+            </settings>
+        </column>
+        <column name="customer_id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Customer ID</label>
+            </settings>
+        </column>
+        <column name="price">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Price</label>
+            </settings>
+        </column>
+        <column name="qty">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Quantity</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Jeysmook\CustomerPrices\Ui\Component\Listing\CustomerPrice\Column\Actions">
+            <settings>
+                <indexField>item_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>107</resizeDefaultWidth>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

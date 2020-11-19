@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Customer Prices for Magento 2
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Jeysmook_CustomerPrices::customer_price" title="Customer Prices" translate="title" module="Jeysmook_CustomerPrices" sortOrder="30" parent="Magento_Catalog::inventory" action="jeysmookCustomerPrices/customerPrice/" resource="Jeysmook_CustomerPrices::customer_price"/>
+    </menu>
+</config>

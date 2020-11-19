@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Customer Prices for Magento 2
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="jeysmookcustomerprices_customerprice_edit"/>
+    <body/>
+</page>

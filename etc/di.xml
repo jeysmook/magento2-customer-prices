@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Customer Prices for Magento 2
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface" type="Jeysmook\CustomerPrices\Model\CustomerPrice"/>
+    <preference for="Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface" type="Jeysmook\CustomerPrices\Model\CustomerPriceRepository"/>
+    <preference for="Jeysmook\CustomerPrices\Api\CustomerResolverInterface" type="Jeysmook\CustomerPrices\Model\Command\Frontend\CustomerResolver"/>
+    <preference for="Jeysmook\CustomerPrices\Api\CustomerProviderInterface" type="Jeysmook\CustomerPrices\Model\Command\CustomerProvider"/>
+
+    <virtualType name="Magento\Catalog\Pricing\Price\Pool">
+        <arguments>
+            <argument name="prices" xsi:type="array">
+                <item name="jeysmook_customer_price" xsi:type="string">Jeysmook\CustomerPrices\Pricing\Price\CustomerPrice</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="additionalFieldsProviderForElasticsearch">
+        <arguments>
+            <argument name="fieldsProviders" xsi:type="array">
+                <item name="customer_prices" xsi:type="object">Jeysmook\CustomerPrices\Model\Adapter\BatchDataMapper\CustomerPriceFieldsProvider</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Elasticsearch\Model\Adapter\FieldMapper\Product\CompositeFieldProvider">
+        <arguments>
+            <argument name="providers" xsi:type="array">
+                <item name="customer_prices" xsi:type="object">Jeysmook\CustomerPrices\Model\Adapter\FieldMapper\Product\FieldProvider\CustomerPriceField</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Elasticsearch\Model\Adapter\FieldMapperInterface">
+        <plugin name="updated-price-field-to-customer-price" type="Jeysmook\CustomerPrices\Plugin\Model\Adapter\FieldMapperPlugin" sortOrder="10"/>
+    </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="jeysmook_customer_price_listing_data_source" xsi:type="string">Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Entity Manager -->
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface" xsi:type="string">Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="const">Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice::TABLE_NAME</item>
+                    <item name="identifierField" xsi:type="const">Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice::PK</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument name="hydrators" xsi:type="array">
+                <item name="Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface" xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- Entity Manager -->
+</config>

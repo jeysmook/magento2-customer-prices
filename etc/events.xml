@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Customer Prices for Magento 2
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="jeysmook_customerprices_api_data_customerpriceinterface_save_before">
+        <observer name="legacy_model_jeysmook_customerprices_customer_price_before_save" instance="Magento\Framework\EntityManager\Observer\BeforeEntitySave"/>
+    </event>
+    <event name="jeysmook_customerprices_api_data_customerpriceinterface_save_after">
+        <observer name="legacy_model_jeysmook_customerprices_customer_price_after_save" instance="Magento\Framework\EntityManager\Observer\AfterEntitySave"/>
+    </event>
+    <event name="jeysmook_customerprices_api_data_customerpriceinterface_delete_before">
+        <observer name="legacy_model_jeysmook_customerprices_customer_price_before_delete" instance="Magento\Framework\EntityManager\Observer\BeforeEntityDelete"/>
+    </event>
+    <event name="jeysmook_customerprices_api_data_customerpriceinterface_delete_after">
+        <observer name="legacy_model_jeysmook_customerprices_customer_price_after_delete" instance="Magento\Framework\EntityManager\Observer\AfterEntityDelete"/>
+    </event>
+    <event name="jeysmook_customerprices_api_data_customerpriceinterface_load_after">
+        <observer name="legacy_model_jeysmook_customerprices_customer_price_after_load" instance="Magento\Framework\EntityManager\Observer\AfterEntityLoad"/>
+    </event>
+    <event name="catalog_product_get_final_price">
+        <observer name="jeysmook_customer_price" instance="Jeysmook\CustomerPrices\Observer\ProcessFinalPriceObserver"/>
+    </event>
+</config>
