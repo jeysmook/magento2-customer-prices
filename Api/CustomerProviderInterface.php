@@ -31,4 +31,11 @@ interface CustomerProviderInterface
      * @return \Magento\Customer\Api\Data\CustomerInterface|null
      */
     public function getCustomer(): ?CustomerInterface;
+
+    /**
+     * Get the current customer website ID
+     *
+     * @return int
+     */
+    public function getWebsiteId(): int;
 }

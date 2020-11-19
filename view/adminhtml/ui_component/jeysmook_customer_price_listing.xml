@@ -71,9 +71,9 @@
                 <label translate="true">Customer ID</label>
             </settings>
         </column>
-        <column name="price">
+        <column name="price" class="Jeysmook\CustomerPrices\Ui\Component\Listing\CustomerPrice\Column\Price">
             <settings>
-                <filter>text</filter>
+                <filter>textRange</filter>
                 <label translate="true">Price</label>
             </settings>
         </column>
@@ -81,6 +81,15 @@
             <settings>
                 <filter>text</filter>
                 <label translate="true">Quantity</label>
+            </settings>
+        </column>
+        <column name="website_id" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Jeysmook\CustomerPrices\Model\Config\Source\Website"/>
+                <filter>select</filter>
+                <sortable>false</sortable>
+                <dataType>select</dataType>
+                <label translate="true">Website</label>
             </settings>
         </column>
         <actionsColumn name="actions" class="Jeysmook\CustomerPrices\Ui\Component\Listing\CustomerPrice\Column\Actions">

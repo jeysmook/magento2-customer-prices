@@ -14,6 +14,7 @@ namespace Jeysmook\CustomerPrices\Model\Command;
 use Exception;
 use Jeysmook\CustomerPrices\Api\CustomerProviderInterface;
 use Jeysmook\CustomerPrices\Api\CustomerResolverInterface;
+use Jeysmook\CustomerPrices\Model\Config\Source\Website;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
 
@@ -76,5 +77,13 @@ class CustomerProvider implements CustomerProviderInterface
             }
         }
         return $this->customer;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getWebsiteId(): int
+    {
+        return $this->getCustomer() ? (int)$this->getCustomer()->getWebsiteId() : Website::DEFAULT_WEBSITE_ID;
     }
 }

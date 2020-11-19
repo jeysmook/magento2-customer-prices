@@ -51,7 +51,10 @@ class FieldMapperPlugin
         string $attributeCode
     ): string {
         if ('price' === $attributeCode && $this->customerProvider->getCustomerId()) {
-            return 'customer_price_' . $this->customerProvider->getCustomerId();
+            return 'customer_price_'
+                . $this->customerProvider->getWebsiteId()
+                . '_'
+                . $this->customerProvider->getCustomerId();
         }
         return $fieldName;
     }

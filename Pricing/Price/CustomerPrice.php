@@ -91,6 +91,7 @@ class CustomerPrice extends AbstractPrice implements BasePriceProviderInterface
         $price = $this->customerPriceResolver->resolve(
             $customerId,
             (int)$product->getId(),
+            $this->customerProvider->getWebsiteId(),
             (float)$this->getQuantity()
         );
 

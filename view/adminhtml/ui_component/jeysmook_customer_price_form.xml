@@ -52,6 +52,7 @@
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
+                <scopeLabel>[GLOBAL]</scopeLabel>
                 <dataType>text</dataType>
                 <label translate="true">Product ID</label>
                 <dataScope>product_id</dataScope>
@@ -63,6 +64,7 @@
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
                 <dataType>text</dataType>
+                <scopeLabel>[GLOBAL]</scopeLabel>
                 <label translate="true">Customer ID</label>
                 <dataScope>customer_id</dataScope>
             </settings>
@@ -71,20 +73,33 @@
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-greater-than-zero" xsi:type="boolean">true</rule>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
                 </validation>
-                <dataType>text</dataType>
+                <dataType>price</dataType>
+                <scopeLabel>[GLOBAL]</scopeLabel>
                 <label translate="true">Price</label>
                 <dataScope>price</dataScope>
+                <imports>
+                    <link name="addbefore">${ $.provider }:data.currency</link>
+                </imports>
             </settings>
         </field>
-        <field name="qty" formElement="input">
+        <field name="qty" component="Magento_CatalogInventory/js/components/qty-validator-changer" formElement="input">
             <settings>
                 <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="less-than-equals-to" xsi:type="number">99999999</rule>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
                 </validation>
-                <dataType>text</dataType>
+                <scopeLabel>[GLOBAL]</scopeLabel>
                 <label translate="true">Quantity</label>
                 <dataScope>qty</dataScope>
+            </settings>
+        </field>
+        <field name="website_id" formElement="hidden">
+            <settings>
+                <dataScope>website_id</dataScope>
+                <dataType>text</dataType>
             </settings>
         </field>
     </fieldset>

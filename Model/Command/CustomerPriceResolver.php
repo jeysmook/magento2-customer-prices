@@ -46,12 +46,14 @@ class CustomerPriceResolver
      * Resolving the customer price for the product
      *
      * @param int $customerId
+     * @param int $websiteId
      * @param int $productId
      * @param float $qty
      * @return float|null
      */
     public function resolve(
         int $customerId,
+        int $websiteId,
         int $productId,
         float $qty
     ): ?float {
@@ -64,6 +66,7 @@ class CustomerPriceResolver
         $select->from($this->resource->getMainTable(), 'price');
         $select->where('customer_id = ?', $customerId);
         $select->where('product_id = ?', $productId);
+        $select->where('website_id = ?', $websiteId);
         $select->where('qty <= ?', max($qty, 1));
         $select->order('qty DESC');
         $select->limit(1);

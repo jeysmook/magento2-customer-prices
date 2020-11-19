@@ -15,8 +15,17 @@ use Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice;
 use Magento\Framework\DB\Select;
 use Zend_Db_Select_Exception;
 
+/**
+ * Applying customer prices to the product collection select
+ *
+ * @SuppressWarnings(PHPMD.LongClassName)
+ */
 class ApplyCustomerPriceToProductCollectionSelect
 {
+    private const COLUMN_NAME = 0;
+    private const COLUMN_EXPR = 1;
+    private const COLUMN_ALIAS = 2;
+
     /**
      * @var CustomerPrice
      */
@@ -25,7 +34,7 @@ class ApplyCustomerPriceToProductCollectionSelect
     /**
      * @var array
      */
-    private $flags = [];
+    private array $flags = [];
 
     /**
      * ApplyCustomerPriceToProductCollectionSelect constructor
@@ -39,8 +48,11 @@ class ApplyCustomerPriceToProductCollectionSelect
     }
 
     /**
+     * Applying customer prices to the product collection select
+     *
      * @param Select $select
      * @param int $customerId
+     * @param int $websiteId
      * @param string $mainAlias
      * @return void
      * @throws Zend_Db_Select_Exception
@@ -48,6 +60,7 @@ class ApplyCustomerPriceToProductCollectionSelect
     public function execute(
         Select $select,
         int $customerId,
+        int $websiteId,
         string $mainAlias = 'e'
     ): void {
         $flagKey = md5($select . $customerId . $mainAlias);
@@ -60,24 +73,25 @@ class ApplyCustomerPriceToProductCollectionSelect
                 $select->joinLeft(
                     [$customerPriceAlias => $this->resource->getMainTable()],
                     $mainAlias . '.entity_id = ' . $customerPriceAlias . '.product_id'
-                    . ' AND ' . $customerPriceAlias . '.customer_id = ' . $customerId
-                    . ' AND ' . $customerPriceAlias . '.qty = 1',
+                        . ' AND ' . $customerPriceAlias . '.customer_id = ' . $customerId
+                        . ' AND ' . $customerPriceAlias . '.qty = 1'
+                        . ' AND ' . $customerPriceAlias . '.website_id = ' . $websiteId,
                     []
                 );
             }
 
             foreach ($columnsPart as &$column) {
-                if (($column[0] ?? null) === 'price_index' && isset($column[1])) {
-                    $columnName = (string)($column[2] ?? $column[1]);
+                if (($column[self::COLUMN_NAME] ?? null) === 'price_index' && isset($column[self::COLUMN_EXPR])) {
+                    $columnName = (string)($column[self::COLUMN_ALIAS] ?? $column[self::COLUMN_EXPR]);
                     if ('minimal_price' === $columnName) {
-                        $column[1] = $this->resource->getConnection()
+                        $column[self::COLUMN_EXPR] = $this->resource->getConnection()
                             ->getLeastSql(
                                 [
-                                    (string)$column[1],
+                                    (string)$column[self::COLUMN_EXPR],
                                     $customerPriceAlias . '.price'
                                 ]
                             );
-                        $column[2] = $columnName;
+                        $column[self::COLUMN_ALIAS] = $columnName;
                     }
                 }
             }

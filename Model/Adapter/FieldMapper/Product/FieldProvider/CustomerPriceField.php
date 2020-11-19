@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Jeysmook\CustomerPrices\Model\Adapter\FieldMapper\Product\FieldProvider;
 
+use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory;
 use Magento\Elasticsearch\Model\Adapter\FieldMapper\Product\FieldProvider\FieldType\ConverterInterface
     as FieldTypeConverterInterface;
@@ -53,8 +54,13 @@ class CustomerPriceField implements FieldProviderInterface
     public function getFields(array $context = []): array
     {
         $fields = [];
-        foreach ($this->customerCollectionFactory->create()->getAllIds() as $customerId) {
-            $fields['customer_price_'. $customerId] = [
+
+        $collection = $this->customerCollectionFactory->create();
+        $collection->addFieldToSelect(['entity_id', 'website_id']);
+
+        /** @var CustomerInterface $customer */
+        foreach ($collection->getItems() as $customer) {
+            $fields['customer_price_' . $customer->getWebsiteId() . '_' . $customer->getId()] = [
                 'type' => $this->fieldTypeConverter->convert(
                     FieldTypeConverterInterface::INTERNAL_DATA_TYPE_FLOAT
                 ),

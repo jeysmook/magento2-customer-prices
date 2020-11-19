@@ -12,56 +12,48 @@ declare(strict_types=1);
 namespace Jeysmook\CustomerPrices\Controller\Adminhtml\CustomerPrice;
 
 use Exception;
+use Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface;
+use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface;
+use Jeysmook\CustomerPrices\Controller\Adminhtml\CustomerPriceAction;
+use Jeysmook\CustomerPrices\Model\CustomerPrice;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\Action\HttpPostActionInterface;
-use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface;
-use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterfaceFactory;
-use Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface;
-use Jeysmook\CustomerPrices\Controller\Adminhtml\CustomerPriceAction;
-use Jeysmook\CustomerPrices\Model\CustomerPrice;
 
 /**
  * Save the request entity
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 class Save extends CustomerPriceAction implements HttpPostActionInterface
 {
     /**
-     * @var DataPersistorInterface
+     * @var CustomerPrice\Locator
      */
-    protected $dataPersistor;
-
-    /**
-     * @var CustomerPriceInterfaceFactory
-     */
-    private $customerPriceFactory;
+    private CustomerPrice\Locator $locator;
 
     /**
      * @var CustomerPriceRepositoryInterface
      */
-    private $customerPriceRepository;
+    private CustomerPriceRepositoryInterface $customerPriceRepository;
 
     /**
      * Save constructor
      *
      * @param Context $context
-     * @param DataPersistorInterface $dataPersistor
-     * @param CustomerPriceInterfaceFactory $customerPriceFactory
+     * @param CustomerPrice\Locator $locator
      * @param CustomerPriceRepositoryInterface $customerPriceRepository
      */
     public function __construct(
         Context $context,
-        DataPersistorInterface $dataPersistor,
-        CustomerPriceInterfaceFactory $customerPriceFactory,
+        CustomerPrice\Locator $locator,
         CustomerPriceRepositoryInterface $customerPriceRepository
     ) {
         parent::__construct($context);
 
-        $this->dataPersistor = $dataPersistor;
-        $this->customerPriceFactory = $customerPriceFactory;
+        $this->locator = $locator;
         $this->customerPriceRepository = $customerPriceRepository;
     }
 
@@ -77,16 +69,12 @@ class Save extends CustomerPriceAction implements HttpPostActionInterface
         $data = $this->getRequest()->getPostValue();
         if ($data) {
             /** @var CustomerPrice $model */
-            $model = $this->customerPriceFactory->create();
+            $model = $this->locator->getCustomerPrice();
             $itemId = (int)$this->getRequest()->getParam('item_id');
-            if ($itemId) {
-                try {
-                    $model = $this->customerPriceRepository->get($itemId);
-                } catch (LocalizedException $e) {
-                    $this->messageManager->addErrorMessage(__('This customer price no longer exists.'));
-                    $resultRedirect->setPath('*/*/');
-                    return $resultRedirect;
-                }
+            if ($itemId && !$model->getItemId()) {
+                $this->messageManager->addErrorMessage(__('This customer price no longer exists.'));
+                $resultRedirect->setPath('*/*/');
+                return $resultRedirect;
             }
 
             $model->setData($data);
@@ -94,7 +82,6 @@ class Save extends CustomerPriceAction implements HttpPostActionInterface
             try {
                 $this->customerPriceRepository->save($model);
                 $this->messageManager->addSuccessMessage(__('You saved the customer price.'));
-                $this->dataPersistor->clear('jeysmook_customer_price');
                 return $this->processRequestReturn($model, $data, $resultRedirect);
             } catch (LocalizedException $exception) {
                 $this->messageManager->addErrorMessage($exception->getMessage());
@@ -105,7 +92,6 @@ class Save extends CustomerPriceAction implements HttpPostActionInterface
                 );
             }
 
-            $this->dataPersistor->set('jeysmook_customer_price', $data);
             $resultRedirect->setPath('*/*/edit', ['item_id' => $itemId]);
             return $resultRedirect;
         }

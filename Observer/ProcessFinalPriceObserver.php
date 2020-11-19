@@ -63,6 +63,7 @@ class ProcessFinalPriceObserver implements ObserverInterface
             $price = $this->customerPriceResolver->resolve(
                 $customerId,
                 (int)$product->getId(),
+                $this->customerProvider->getWebsiteId(),
                 (float)$observer->getEvent()->getQty()
             );
 

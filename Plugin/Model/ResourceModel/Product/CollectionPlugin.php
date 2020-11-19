@@ -64,7 +64,8 @@ class CollectionPlugin
             && !$collection->getFlag('customer_prices')) {
             $this->applyCustomerPriceToProductCollectionSelect->execute(
                 $collection->getSelect(),
-                $customerId
+                $customerId,
+                $this->customerProvider->getWebsiteId()
             );
             $collection->setFlag('customer_prices', true);
         }

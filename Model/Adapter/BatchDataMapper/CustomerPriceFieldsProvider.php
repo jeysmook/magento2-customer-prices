@@ -73,7 +73,7 @@ class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
         }
 
         // get default price data for products
-        $websiteId = $this->storeManager->getStore($storeId)->getWebsiteId();
+        $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
         $priceData = $this->priceResourceIndex->getPriceIndexData($productIds, $storeId);
 
         // get all customers for the current scope
@@ -81,6 +81,9 @@ class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
         $select->from($this->resource->getTable('customer_entity'), ['entity_id', 'group_id']);
         $select->where('website_id = ?', $websiteId);
         $customerIdsGroupIds = $this->resource->getConnection()->fetchPairs($select);
+        if (empty($customerIdsGroupIds)) {
+            return $fields;
+        }
 
         // get all customer prices for products
         $select = $this->resource->getConnection()->select();
@@ -96,6 +99,7 @@ class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
         foreach ($productIds as $productId) {
             $fields[$productId] = $this->getProductPriceData(
                 $productId,
+                $websiteId,
                 $customerIdsGroupIds,
                 $customerPrices,
                 $priceData
@@ -108,6 +112,7 @@ class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
      * Get product customer price data
      *
      * @param int $productId
+     * @param int $websiteId
      * @param array $customerIdsGroupIds
      * @param array $customerPrices
      * @param array $priceData
@@ -115,6 +120,7 @@ class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
      */
     private function getProductPriceData(
         int $productId,
+        int $websiteId,
         array $customerIdsGroupIds,
         array $customerPrices,
         array $priceData
@@ -122,7 +128,7 @@ class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
         $result = [];
         foreach ($customerIdsGroupIds as $customerId => $groupId) {
             $price = $customerPrices[$productId][$customerId] ?? $priceData[$productId][$groupId];
-            $result['customer_price_' . $customerId] = sprintf('%F', $price);
+            $result['customer_price_' . $websiteId . '_' . $customerId] = sprintf('%F', $price);
         }
         return $result;
     }
