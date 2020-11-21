@@ -16,8 +16,9 @@ use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface;
 use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterfaceFactory;
 use Jeysmook\CustomerPrices\Model\Command\GetCustomerPriceById;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Model\StoreFactory;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Getting information about the current customer price only for adminhtml area
@@ -27,22 +28,27 @@ class Locator
     /**
      * @var GetCustomerPriceById
      */
-    private GetCustomerPriceById $getCustomerPriceById;
+    private $getCustomerPriceById;
 
     /**
      * @var CustomerPriceInterfaceFactory
      */
-    private CustomerPriceInterfaceFactory $customerPriceFactory;
+    private $customerPriceFactory;
 
     /**
      * @var RequestInterface
      */
-    private RequestInterface $request;
+    private $request;
 
     /**
-     * @var StoreFactory
+     * @var StoreManagerInterface
      */
-    private StoreFactory $storeFactory;
+    private $storeManager;
+
+    /**
+     * @var array
+     */
+    private $cache = [];
 
     /**
      * Locator constructor
@@ -50,18 +56,18 @@ class Locator
      * @param GetCustomerPriceById $getCustomerPriceById
      * @param CustomerPriceInterfaceFactory $customerPriceFactory
      * @param RequestInterface $request
-     * @param StoreFactory $storeFactory
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         GetCustomerPriceById $getCustomerPriceById,
         CustomerPriceInterfaceFactory $customerPriceFactory,
         RequestInterface $request,
-        StoreFactory $storeFactory
+        StoreManagerInterface $storeManager
     ) {
         $this->getCustomerPriceById = $getCustomerPriceById;
         $this->customerPriceFactory = $customerPriceFactory;
         $this->request = $request;
-        $this->storeFactory = $storeFactory;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -71,28 +77,42 @@ class Locator
      */
     public function getCustomerPrice(): CustomerPriceInterface
     {
+        $cacheKey = 'current_customer';
+        if (isset($this->cache[$cacheKey])) {
+            return $this->cache[$cacheKey];
+        }
+
         try {
-            return $this->getCustomerPriceById->execute(
+            $customer = $this->getCustomerPriceById->execute(
                 (int)$this->request->getParam('item_id')
             );
         } catch (Exception $exception) {
-            return $this->customerPriceFactory->create();
+            $customer = $this->customerPriceFactory->create();
         }
+        return $this->catch[$cacheKey] = $customer;
     }
 
     /**
      * Get selected store
      *
      * @return StoreInterface
+     * @throws NoSuchEntityException
      */
     public function getStore(): StoreInterface
     {
-        $store = $this->storeFactory->create();
-        try {
-            return $store->load((int)$this->request->getParam('store'));
-        } catch (Exception $exception) {
-            return $store;
+        $storeId = $this->request->getParam('store');
+        $storeId = $storeId ?: ($this->getCustomerPrice()->getWebsiteId() ?: null);
+        $cacheKey = $storeId ? 'store_' . $storeId : 'store_default';
+        if (isset($this->cache[$cacheKey])) {
+            return $this->cache[$cacheKey];
         }
-        return $store;
+
+        try {
+            return $this->cache[$cacheKey] = $storeId
+                ? $this->storeManager->getStore($storeId)
+                : $this->storeManager->getStore();
+        } catch (Exception $exception) {
+            throw new NoSuchEntityException(__('The store not found.'));
+        }
     }
 }

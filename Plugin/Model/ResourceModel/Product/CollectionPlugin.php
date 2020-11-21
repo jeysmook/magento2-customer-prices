@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Jeysmook\CustomerPrices\Plugin\Model\ResourceModel\Product;
 
-use Exception;
 use Jeysmook\CustomerPrices\Api\CustomerProviderInterface;
 use Jeysmook\CustomerPrices\Model\Command\ApplyCustomerPriceToProductCollectionSelect;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
@@ -27,12 +26,12 @@ class CollectionPlugin
     /**
      * @var CustomerProviderInterface
      */
-    private CustomerProviderInterface $customerProvider;
+    private $customerProvider;
 
     /**
      * @var ApplyCustomerPriceToProductCollectionSelect
      */
-    private ApplyCustomerPriceToProductCollectionSelect $applyCustomerPriceToProductCollectionSelect;
+    private $applyCustomerPriceToProductCollectionSelect;
 
     /**
      * CollectionPlugin constructor
@@ -59,6 +58,7 @@ class CollectionPlugin
     public function beforeLoad(
         Collection $collection
     ): void {
+        return;
         if (!$collection->isLoaded()
             && ($customerId = $this->customerProvider->getCustomerId())
             && !$collection->getFlag('customer_prices')) {

@@ -29,12 +29,12 @@ class ApplyCustomerPriceToProductCollectionSelect
     /**
      * @var CustomerPrice
      */
-    private CustomerPrice $resource;
+    private $resource;
 
     /**
      * @var array
      */
-    private array $flags = [];
+    private $flags = [];
 
     /**
      * ApplyCustomerPriceToProductCollectionSelect constructor

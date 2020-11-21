@@ -33,6 +33,8 @@ class CustomerPrice extends AbstractModel implements CustomerPriceInterface
     private const PRICE = 'price';
     private const QTY = 'qty';
     private const WEBSITE_ID = 'website_id';
+    private const CREATED_AT = 'created_at';
+    private const UPDATED_AT = 'updated_at';
     /**#@-*/
 
     /**
@@ -52,6 +54,16 @@ class CustomerPrice extends AbstractModel implements CustomerPriceInterface
     {
         $this->_init(ResourceModel\CustomerPrice::class);
         $this->setIdFieldName(self::ID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function beforeSave()
+    {
+        if ($this->hasDataChanges()) {
+            $this->setData(self::UPDATED_AT, null);
+        }
     }
 
     /**
@@ -154,5 +166,39 @@ class CustomerPrice extends AbstractModel implements CustomerPriceInterface
     public function setWebsiteId(int $value): void
     {
         $this->setData(self::WEBSITE_ID, $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCreatedAt(): ?string
+    {
+        $value = (string)$this->getData(self::CREATED_AT);
+        return $value !== '' ? $value : null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setCreatedAt(string $value): void
+    {
+        $this->setData(self::CREATED_AT, $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUpdatedAt(): ?string
+    {
+        $value = (string)$this->getData(self::UPDATED_AT);
+        return $value !== '' ? $value : null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setUpdatedAt(string $value): void
+    {
+        $this->setData(self::UPDATED_AT, $value);
     }
 }

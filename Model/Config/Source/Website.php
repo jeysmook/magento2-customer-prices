@@ -25,17 +25,17 @@ class Website implements OptionSourceInterface
      *
      * Constant represents default website id
      */
-    public const DEFAULT_WEBSITE_ID = 0;
+    public const DEFAULT_WEBSITE_ID = 1;
 
     /**
      * @var CollectionFactory
      */
-    private CollectionFactory $collectionFactory;
+    private $collectionFactory;
 
     /**
      * @var array
      */
-    private array $options = [];
+    private $options = [];
 
     /**
      * Website constructor
@@ -77,7 +77,6 @@ class Website implements OptionSourceInterface
         foreach ($this->collectionFactory->create() as $website) {
             $this->options[$website->getId()] = $website->getName();
         }
-        $this->options[self::DEFAULT_WEBSITE_ID] = 'Global Scope';
         return $this->options;
     }
 }

@@ -22,12 +22,12 @@ class DeleteCustomerPriceById
     /**
      * @var GetCustomerPriceById
      */
-    private GetCustomerPriceById $getCustomerPriceById;
+    private $getCustomerPriceById;
 
     /**
      * @var DeleteCustomerPrice
      */
-    private DeleteCustomerPrice $deleteCustomerPrice;
+    private $deleteCustomerPrice;
 
     /**
      * DeleteCustomerPriceById constructor

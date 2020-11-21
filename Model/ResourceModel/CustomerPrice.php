@@ -92,4 +92,26 @@ class CustomerPrice extends AbstractDb
         $this->entityManager->delete($object);
         return $this;
     }
+
+    /**
+     * Get price index data for scope (website)
+     *
+     * @param int[] $productIds
+     * @param int $websiteId
+     * @return array
+     */
+    public function getPriceIndexData(array $productIds, int $websiteId): array
+    {
+        $select = $this->getConnection()->select();
+        $select->from($this->getMainTable(), ['product_id', 'customer_id', 'price']);
+        $select->where('product_id IN (?)', $productIds);
+        $select->where('qty = 1');
+        $select->where('website_id = ?', $websiteId);
+
+        $customerPrices = [];
+        foreach ($this->getConnection()->fetchAssoc($select) as $priceRow) {
+            $customerPrices[$priceRow['product_id']][$priceRow['customer_id']] = $priceRow['price'];
+        }
+        return $customerPrices;
+    }
 }

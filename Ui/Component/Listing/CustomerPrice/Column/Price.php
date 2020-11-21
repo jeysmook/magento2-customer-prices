@@ -34,17 +34,17 @@ class Price extends Column
     /**
      * @var CurrencyInterface
      */
-    private CurrencyInterface $localeCurrency;
+    private $localeCurrency;
 
     /**
      * @var StoreManagerInterface
      */
-    private StoreManagerInterface $storeManager;
+    private $storeManager;
 
     /**
      * @var array
      */
-    private array $baseCurrencyCodes = [];
+    private $baseCurrencyCodes = [];
 
     /**
      * @param ContextInterface $context

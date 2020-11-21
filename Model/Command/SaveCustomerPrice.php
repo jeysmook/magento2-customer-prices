@@ -24,7 +24,7 @@ class SaveCustomerPrice
     /**
      * @var CustomerPrice
      */
-    private CustomerPrice $resource;
+    private $resource;
 
     /**
      * SaveCustomerPrice constructor

@@ -27,12 +27,12 @@ class ProcessFinalPriceObserver implements ObserverInterface
     /**
      * @var CustomerProviderInterface
      */
-    private CustomerProviderInterface $customerProvider;
+    private $customerProvider;
 
     /**
      * @var CustomerPriceResolver
      */
-    private CustomerPriceResolver $customerPriceResolver;
+    private $customerPriceResolver;
 
     /**
      * ProcessFinalPriceObserver constructor
@@ -62,8 +62,8 @@ class ProcessFinalPriceObserver implements ObserverInterface
             $product = $observer->getEvent()->getProduct();
             $price = $this->customerPriceResolver->resolve(
                 $customerId,
-                (int)$product->getId(),
                 $this->customerProvider->getWebsiteId(),
+                (int)$product->getId(),
                 (float)$observer->getEvent()->getQty()
             );
 

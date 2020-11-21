@@ -32,12 +32,12 @@ class Save extends CustomerPriceAction implements HttpPostActionInterface
     /**
      * @var CustomerPrice\Locator
      */
-    private CustomerPrice\Locator $locator;
+    private $locator;
 
     /**
      * @var CustomerPriceRepositoryInterface
      */
-    private CustomerPriceRepositoryInterface $customerPriceRepository;
+    private $customerPriceRepository;
 
     /**
      * Save constructor

@@ -24,7 +24,7 @@ class CustomerPriceResolver
     /**
      * @var CustomerPrice
      */
-    private CustomerPrice $resource;
+    private $resource;
 
     /**
      * @var float|null[]
@@ -32,7 +32,7 @@ class CustomerPriceResolver
     private $cache = [];
 
     /**
-     * CustomerPriceResolver constructor
+     * CustomerPriceFieldNameResolver constructor
      *
      * @param CustomerPrice $resource
      */

@@ -22,7 +22,7 @@ class General implements ModifierInterface
     /**
      * @var Locator
      */
-    private Locator $locator;
+    private $locator;
 
     /**
      * General constructor

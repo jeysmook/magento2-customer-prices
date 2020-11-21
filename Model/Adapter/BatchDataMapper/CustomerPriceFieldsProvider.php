@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Jeysmook\CustomerPrices\Model\Adapter\BatchDataMapper;
 
+use Jeysmook\CustomerPrices\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
+use Jeysmook\CustomerPrices\Model\Command\GetScopeCustomerIdsGroupIds;
 use Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice;
 use Magento\AdvancedSearch\Model\Adapter\DataMapper\AdditionalFieldsProviderInterface;
 use Magento\CatalogSearch\Model\Indexer\Fulltext\Action\DataProvider;
@@ -19,28 +21,40 @@ use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Provide data mapping for customer price fields
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
 {
     /**
      * @var CustomerPrice
      */
-    private CustomerPrice $resource;
+    private $resource;
 
     /**
      * @var Index
      */
-    private Index $priceResourceIndex;
+    private $priceResourceIndex;
 
     /**
      * @var DataProvider
      */
-    private DataProvider $dataProvider;
+    private $dataProvider;
 
     /**
      * @var StoreManagerInterface
      */
-    private StoreManagerInterface $storeManager;
+    private $storeManager;
+
+    /**
+     * @var GetScopeCustomerIdsGroupIds
+     */
+    private $getScopeCustomerIdsGroupIds;
+
+    /**
+     * @var CustomerPriceFieldNameResolver
+     */
+    private $customerPriceFieldNameResolver;
 
     /**
      * CustomerPriceFieldsProvider constructor
@@ -49,17 +63,23 @@ class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
      * @param Index $priceResourceIndex
      * @param DataProvider $dataProvider
      * @param StoreManagerInterface $storeManager
+     * @param GetScopeCustomerIdsGroupIds $getScopeCustomerIdsGroupIds
+     * @param CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
      */
     public function __construct(
         CustomerPrice $resource,
         Index $priceResourceIndex,
         DataProvider $dataProvider,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        GetScopeCustomerIdsGroupIds $getScopeCustomerIdsGroupIds,
+        CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
     ) {
         $this->resource = $resource;
         $this->priceResourceIndex = $priceResourceIndex;
         $this->dataProvider = $dataProvider;
         $this->storeManager = $storeManager;
+        $this->getScopeCustomerIdsGroupIds = $getScopeCustomerIdsGroupIds;
+        $this->customerPriceFieldNameResolver = $customerPriceFieldNameResolver;
     }
 
     /**
@@ -72,28 +92,10 @@ class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
             return $fields;
         }
 
-        // get default price data for products
         $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
         $priceData = $this->priceResourceIndex->getPriceIndexData($productIds, $storeId);
-
-        // get all customers for the current scope
-        $select = $this->resource->getConnection()->select();
-        $select->from($this->resource->getTable('customer_entity'), ['entity_id', 'group_id']);
-        $select->where('website_id = ?', $websiteId);
-        $customerIdsGroupIds = $this->resource->getConnection()->fetchPairs($select);
-        if (empty($customerIdsGroupIds)) {
-            return $fields;
-        }
-
-        // get all customer prices for products
-        $select = $this->resource->getConnection()->select();
-        $select->from($this->resource->getMainTable(), ['product_id', 'customer_id', 'price']);
-        $select->where('product_id IN (?)', $productIds);
-        $select->where('qty = 1');
-        $customerPrices = [];
-        foreach ($this->resource->getConnection()->fetchAssoc($select) as $priceRow) {
-            $customerPrices[$priceRow['product_id']][$priceRow['customer_id']] = $priceRow['price'];
-        }
+        $customerIdsGroupIds = $this->getScopeCustomerIdsGroupIds->execute($websiteId);
+        $customerPrices = $this->resource->getPriceIndexData($productIds, $websiteId);
 
         // generate fields for search
         foreach ($productIds as $productId) {
@@ -127,8 +129,11 @@ class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
     ): array {
         $result = [];
         foreach ($customerIdsGroupIds as $customerId => $groupId) {
-            $price = $customerPrices[$productId][$customerId] ?? $priceData[$productId][$groupId];
-            $result['customer_price_' . $websiteId . '_' . $customerId] = sprintf('%F', $price);
+            $result[
+                $this->customerPriceFieldNameResolver->resolve(
+                    ['websiteId' => $websiteId, 'customerId' => $customerId]
+                )
+            ] = sprintf('%F', $customerPrices[$productId][$customerId] ?? $priceData[$productId][$groupId]);
         }
         return $result;
     }

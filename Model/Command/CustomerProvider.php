@@ -26,12 +26,12 @@ class CustomerProvider implements CustomerProviderInterface
     /**
      * @var CustomerResolverInterface
      */
-    private CustomerResolverInterface $customerResolver;
+    private $customerResolver;
 
     /**
      * @var CustomerRepositoryInterface
      */
-    private CustomerRepositoryInterface $customerRepository;
+    private $customerRepository;
 
     /**
      * @var CustomerInterface|null|bool

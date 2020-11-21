@@ -24,12 +24,12 @@ class GetCustomerPriceById
     /**
      * @var CustomerPriceInterfaceFactory
      */
-    private CustomerPriceInterfaceFactory $customerPriceFactory;
+    private $customerPriceFactory;
 
     /**
      * @var CustomerPrice
      */
-    private CustomerPrice $resource;
+    private $resource;
 
     /**
      * GetCustomerPriceById constructor

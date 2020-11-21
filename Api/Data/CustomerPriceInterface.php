@@ -99,4 +99,32 @@ interface CustomerPriceInterface
      * @param int $value
      */
     public function setWebsiteId(int $value): void;
+
+    /**
+     * Get created at
+     *
+     * @return string|null
+     */
+    public function getCreatedAt(): ?string;
+
+    /**
+     * Set created at
+     *
+     * @param string $value
+     */
+    public function setCreatedAt(string $value): void;
+
+    /**
+     * Get updated at
+     *
+     * @return string|null
+     */
+    public function getUpdatedAt(): ?string;
+
+    /**
+     * Set updated at
+     *
+     * @param string $value
+     */
+    public function setUpdatedAt(string $value): void;
 }

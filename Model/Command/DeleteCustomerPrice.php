@@ -24,7 +24,7 @@ class DeleteCustomerPrice
     /**
      * @var CustomerPrice
      */
-    private CustomerPrice $resource;
+    private $resource;
 
     /**
      * DeleteCustomerPrice constructor

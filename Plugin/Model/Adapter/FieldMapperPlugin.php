@@ -12,27 +12,38 @@ declare(strict_types=1);
 namespace Jeysmook\CustomerPrices\Plugin\Model\Adapter;
 
 use Jeysmook\CustomerPrices\Api\CustomerProviderInterface;
+use Jeysmook\CustomerPrices\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
 use Magento\Elasticsearch\Model\Adapter\FieldMapperInterface;
 
 /**
  * Updating the price field to the customer price field
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 class FieldMapperPlugin
 {
     /**
      * @var CustomerProviderInterface
      */
-    private CustomerProviderInterface $customerProvider;
+    private $customerProvider;
+
+    /**
+     * @var CustomerPriceFieldNameResolver
+     */
+    private $customerPriceFieldNameResolver;
 
     /**
      * FieldMapperPlugin constructor
      *
      * @param CustomerProviderInterface $customerProvider
+     * @param CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
      */
     public function __construct(
-        CustomerProviderInterface $customerProvider
+        CustomerProviderInterface $customerProvider,
+        CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
     ) {
         $this->customerProvider = $customerProvider;
+        $this->customerPriceFieldNameResolver = $customerPriceFieldNameResolver;
     }
 
     /**
@@ -51,10 +62,12 @@ class FieldMapperPlugin
         string $attributeCode
     ): string {
         if ('price' === $attributeCode && $this->customerProvider->getCustomerId()) {
-            return 'customer_price_'
-                . $this->customerProvider->getWebsiteId()
-                . '_'
-                . $this->customerProvider->getCustomerId();
+            return $this->customerPriceFieldNameResolver->resolve(
+                [
+                    'websiteId' => $this->customerProvider->getWebsiteId(),
+                    'customerId' => $this->customerProvider->getCustomerId()
+                ]
+            );
         }
         return $fieldName;
     }

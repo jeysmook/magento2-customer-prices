@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Jeysmook\CustomerPrices\Model\Adapter\FieldMapper\Product\FieldProvider;
 
+use Jeysmook\CustomerPrices\Model\Adapter\FieldMapper\Product\FieldProvider\FieldName\CustomerPriceFieldNameResolver;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory;
 use Magento\Elasticsearch\Model\Adapter\FieldMapper\Product\FieldProvider\FieldType\ConverterInterface
@@ -27,25 +28,33 @@ class CustomerPriceField implements FieldProviderInterface
     /**
      * @var FieldTypeConverterInterface
      */
-    private FieldTypeConverterInterface $fieldTypeConverter;
+    private $fieldTypeConverter;
 
     /**
      * @var CollectionFactory
      */
-    private CollectionFactory $customerCollectionFactory;
+    private $customerCollectionFactory;
+
+    /**
+     * @var CustomerPriceFieldNameResolver
+     */
+    private $customerPriceFieldNameResolver;
 
     /**
      * CustomerPriceField constructor
      *
      * @param FieldTypeConverterInterface $fieldTypeConverter
      * @param CollectionFactory $customerCollectionFactory
+     * @param CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
      */
     public function __construct(
         FieldTypeConverterInterface $fieldTypeConverter,
-        CollectionFactory $customerCollectionFactory
+        CollectionFactory $customerCollectionFactory,
+        CustomerPriceFieldNameResolver $customerPriceFieldNameResolver
     ) {
         $this->fieldTypeConverter = $fieldTypeConverter;
         $this->customerCollectionFactory = $customerCollectionFactory;
+        $this->customerPriceFieldNameResolver = $customerPriceFieldNameResolver;
     }
 
     /**
@@ -60,7 +69,10 @@ class CustomerPriceField implements FieldProviderInterface
 
         /** @var CustomerInterface $customer */
         foreach ($collection->getItems() as $customer) {
-            $fields['customer_price_' . $customer->getWebsiteId() . '_' . $customer->getId()] = [
+            $fieldName = $this->customerPriceFieldNameResolver->resolve(
+                ['websiteId' => $customer->getWebsiteId(), 'customerId' => $customer->getId()]
+            );
+            $fields[$fieldName] = [
                 'type' => $this->fieldTypeConverter->convert(
                     FieldTypeConverterInterface::INTERNAL_DATA_TYPE_FLOAT
                 ),
