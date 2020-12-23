@@ -99,6 +99,10 @@ class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
 
         // generate fields for search
         foreach ($productIds as $productId) {
+            if (!isset($priceData[$productId])) {
+                continue;
+            }
+
             $fields[$productId] = $this->getProductPriceData(
                 $productId,
                 $websiteId,
