@@ -103,10 +103,15 @@ class CustomerPrice extends AbstractDb
     public function getPriceIndexData(array $productIds, int $websiteId): array
     {
         $select = $this->getConnection()->select();
-        $select->from($this->getMainTable(), ['product_id', 'customer_id', 'price']);
-        $select->where('product_id IN (?)', $productIds);
-        $select->where('qty = 1');
-        $select->where('website_id = ?', $websiteId);
+        $select->from(['main' => $this->getMainTable()], ['product_id', 'customer_id', 'price']);
+        $select->joinInner(
+            ['customer' => $this->getTable('customer_entity')],
+            'customer.entity_id = main.customer_id AND customer.website_id = ' . $websiteId,
+            ''
+        );
+        $select->where('main.product_id IN (?)', $productIds);
+        $select->where('main.qty = 1');
+        $select->where('main.website_id = ?', $websiteId);
 
         $customerPrices = [];
         foreach ($this->getConnection()->fetchAssoc($select) as $priceRow) {
