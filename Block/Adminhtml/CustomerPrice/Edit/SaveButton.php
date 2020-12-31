@@ -22,7 +22,7 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
     /**
      * @inheritDoc
      */
-    public function getButtonData()
+    public function getButtonData(): array
     {
         return [
             'label' => __('Save'),
@@ -47,6 +47,7 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
             ],
             'class_name' => Container::SPLIT_BUTTON,
             'options' => $this->getOptions(),
+            'sort_order' => 40,
         ];
     }
 

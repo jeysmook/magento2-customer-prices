@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Jeysmook\CustomerPrices\Ui\Component\Form\CustomerPrice\Modifier;
 
 use Jeysmook\CustomerPrices\Model\CustomerPrice\Locator;
+use Magento\Store\Model\Store;
 use Magento\Ui\DataProvider\Modifier\ModifierInterface;
 
 /**
@@ -38,23 +39,33 @@ class General implements ModifierInterface
     /**
      * @inheritDoc
      */
-    public function modifyData(array $data)
+    public function modifyData(array $data): array
     {
-        $customerPrice = $this->locator->getCustomerPrice();
-        $data[$customerPrice->getItemId()] = array_merge(
-            $customerPrice->getData(),
+        $store = $this->locator->getStore();
+        $itemId = $this->locator->getCustomerPrice()->getItemId();
+        if ($itemId) {
+            $data[$itemId] = $this->locator->getCustomerPrice()->getData();
+        }
+
+        $data[$itemId] = array_merge(
+            $this->locator->getCustomerPrice()->getData(),
             [
-                'currency' => $this->locator->getStore()->getBaseCurrency()->getCurrencySymbol(),
-                'website_id' => $this->locator->getStore()->getWebsiteId()
+                'currency' => $store->getBaseCurrency()->getCurrencySymbol(),
+                'store_id' => $store->getId()
             ]
         );
+
+        if ($this->locator->getRequestStoreId() || $itemId) {
+            $data[$itemId]['website_id'] = $store->getWebsiteId();
+        }
+
         return $data;
     }
 
     /**
      * @inheritDoc
      */
-    public function modifyMeta(array $meta)
+    public function modifyMeta(array $meta): array
     {
         return $meta;
     }

@@ -21,7 +21,7 @@ class BackButton extends GenericButton implements ButtonProviderInterface
     /**
      * @inheritDoc
      */
-    public function getButtonData()
+    public function getButtonData(): array
     {
         return [
             'label' => __('Back'),

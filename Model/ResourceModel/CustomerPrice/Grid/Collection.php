@@ -81,6 +81,36 @@ class Collection extends CustomerPriceCollection implements SearchResultInterfac
     /**
      * @inheritDoc
      */
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->_map['fields']['product_sku'] = 'product.sku';
+        $this->_map['fields']['customer_email'] = 'customer.email';
+        $this->_map['fields']['website_id'] = 'main_table.website_id';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function _initSelect()
+    {
+        parent::_initSelect();
+        $this->getSelect()->joinInner(
+            ['product' => $this->getTable('catalog_product_entity')],
+            'product.entity_id = main_table.product_id',
+            ['product_sku' => 'product.sku']
+        );
+        $this->getSelect()->joinInner(
+            ['customer' => $this->getTable('customer_entity')],
+            'customer.entity_id = main_table.customer_id AND customer.website_id = main_table.website_id',
+            ['customer_email' => 'customer.email']
+        );
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getAggregations()
     {
         return $this->aggregations;

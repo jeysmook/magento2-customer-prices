@@ -62,13 +62,27 @@
         <column name="product_id">
             <settings>
                 <filter>text</filter>
+                <visible>false</visible>
                 <label translate="true">Product ID</label>
             </settings>
         </column>
         <column name="customer_id">
             <settings>
                 <filter>text</filter>
+                <visible>false</visible>
                 <label translate="true">Customer ID</label>
+            </settings>
+        </column>
+        <column name="product_sku">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Product SKU</label>
+            </settings>
+        </column>
+        <column name="customer_email">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Customer Email</label>
             </settings>
         </column>
         <column name="price" class="Jeysmook\CustomerPrices\Ui\Component\Listing\CustomerPrice\Column\Price">
@@ -79,7 +93,7 @@
         </column>
         <column name="qty">
             <settings>
-                <filter>text</filter>
+                <filter>textRange</filter>
                 <label translate="true">Quantity</label>
             </settings>
         </column>

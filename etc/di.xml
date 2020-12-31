@@ -45,7 +45,14 @@
         <arguments>
             <argument name="collections" xsi:type="array">
                 <item name="jeysmook_customer_price_listing_data_source" xsi:type="string">Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice\Grid\Collection</item>
+                <item name="jeysmook_customer_prices_customer_listing_data_source" xsi:type="string">Magento\Customer\Model\ResourceModel\Grid\Collection</item>
             </argument>
+        </arguments>
+    </type>
+
+    <type name="Jeysmook\CustomerPrices\Ui\Component\Listing\Product\DataProvider">
+        <arguments>
+            <argument name="modifiersPool" xsi:type="null"/>
         </arguments>
     </type>
 

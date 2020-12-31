@@ -76,7 +76,7 @@ class Price extends Column
      * @throws LocalizedException
      * @throws Zend_Currency_Exception
      */
-    public function prepareDataSource(array $dataSource)
+    public function prepareDataSource(array $dataSource): array
     {
         if (isset($dataSource['data']['items'])) {
             $fieldName = $this->getData('name');

@@ -17,12 +17,14 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
 /**
- * Listing actions of the request entity
+ * Listing actions of the customer prices
  */
 class Actions extends Column
 {
     private const PATH_EDIT = 'jeysmookCustomerPrices/customerPrice/edit';
     private const PATH_DELETE = 'jeysmookCustomerPrices/customerPrice/delete';
+    private const PATH_TO_PRODUCT = 'catalog/product/edit';
+    private const PATH_TO_CUSTOMER = 'customer/index/edit';
 
     /**
      * @var UrlInterface
@@ -57,7 +59,7 @@ class Actions extends Column
     /**
      * @inheritDoc
      */
-    public function prepareDataSource(array $dataSource)
+    public function prepareDataSource(array $dataSource): array
     {
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
@@ -72,7 +74,10 @@ class Actions extends Column
                         '__disableTmpl' => true,
                     ];
                     $item[$name]['delete'] = [
-                        'href' => $this->urlBuilder->getUrl(self::PATH_DELETE, ['item_id' => $item['item_id']]),
+                        'href' => $this->urlBuilder->getUrl(
+                            self::PATH_DELETE,
+                            ['item_id' => $item['item_id']]
+                        ),
                         'label' => __('Delete'),
                         'confirm' => [
                             'title' => __('Delete %1', $item['item_id']),
@@ -80,6 +85,22 @@ class Actions extends Column
                             '__disableTmpl' => true,
                         ],
                         'post' => true,
+                        '__disableTmpl' => true,
+                    ];
+                    $item[$name]['to_product'] = [
+                        'href' => $this->urlBuilder->getUrl(
+                            self::PATH_TO_PRODUCT,
+                            ['id' => $item['product_id']]
+                        ),
+                        'label' => __('Go to Product'),
+                        '__disableTmpl' => true,
+                    ];
+                    $item[$name]['to_customer'] = [
+                        'href' => $this->urlBuilder->getUrl(
+                            self::PATH_TO_CUSTOMER,
+                            ['id' => $item['customer_id']]
+                        ),
+                        'label' => __('Go to Customer'),
                         '__disableTmpl' => true,
                     ];
                 }

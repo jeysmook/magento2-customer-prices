@@ -20,6 +20,7 @@
             <button name="save" class="Jeysmook\CustomerPrices\Block\Adminhtml\CustomerPrice\Edit\SaveButton"/>
             <button name="delete" class="Jeysmook\CustomerPrices\Block\Adminhtml\CustomerPrice\Edit\DeleteButton"/>
             <button name="back" class="Jeysmook\CustomerPrices\Block\Adminhtml\CustomerPrice\Edit\BackButton"/>
+            <button name="reset" class="Jeysmook\CustomerPrices\Block\Adminhtml\CustomerPrice\Edit\ResetButton"/>
         </buttons>
         <namespace>jeysmook_customer_price_form</namespace>
         <dataScope>data</dataScope>
@@ -47,29 +48,19 @@
         <settings>
             <label/>
         </settings>
-        <field name="product_id" formElement="input">
+        <field name="product_id" formElement="hidden" sortOrder="10">
             <settings>
-                <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
-                </validation>
-                <scopeLabel>[GLOBAL]</scopeLabel>
                 <dataType>text</dataType>
-                <label translate="true">Product ID</label>
                 <dataScope>product_id</dataScope>
             </settings>
         </field>
-        <field name="customer_id" formElement="input">
+        <field name="customer_id" formElement="hidden" sortOrder="20">
             <settings>
-                <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
-                </validation>
                 <dataType>text</dataType>
-                <scopeLabel>[GLOBAL]</scopeLabel>
-                <label translate="true">Customer ID</label>
                 <dataScope>customer_id</dataScope>
             </settings>
         </field>
-        <field name="price" formElement="input">
+        <field name="price" formElement="input" sortOrder="30">
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
@@ -77,7 +68,7 @@
                     <rule name="validate-number" xsi:type="boolean">true</rule>
                 </validation>
                 <dataType>price</dataType>
-                <scopeLabel>[GLOBAL]</scopeLabel>
+                <scopeLabel>[WEBSITE]</scopeLabel>
                 <label translate="true">Price</label>
                 <dataScope>price</dataScope>
                 <imports>
@@ -85,10 +76,14 @@
                 </imports>
             </settings>
         </field>
-        <field name="qty" component="Magento_CatalogInventory/js/components/qty-validator-changer" formElement="input">
+        <field name="qty" component="Magento_CatalogInventory/js/components/qty-validator-changer" formElement="input" sortOrder="40">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="value" xsi:type="object">Magento\CatalogInventory\Model\Source\StockConfiguration</item>
+                </item>
+            </argument>
             <settings>
                 <validation>
-                    <rule name="less-than-equals-to" xsi:type="number">99999999</rule>
                     <rule name="validate-number" xsi:type="boolean">true</rule>
                 </validation>
                 <scopeLabel>[GLOBAL]</scopeLabel>
@@ -96,7 +91,7 @@
                 <dataScope>qty</dataScope>
             </settings>
         </field>
-        <field name="website_id" formElement="hidden">
+        <field name="website_id" formElement="hidden" sortOrder="50">
             <settings>
                 <dataScope>website_id</dataScope>
                 <dataType>text</dataType>

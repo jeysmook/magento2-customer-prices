@@ -21,7 +21,7 @@ class DeleteButton extends GenericButton implements ButtonProviderInterface
     /**
      * @inheritDoc
      */
-    public function getButtonData()
+    public function getButtonData(): array
     {
         $data = [];
         if ($this->getItemId()) {

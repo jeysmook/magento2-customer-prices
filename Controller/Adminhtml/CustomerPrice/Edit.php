@@ -11,14 +11,13 @@ declare(strict_types=1);
 
 namespace Jeysmook\CustomerPrices\Controller\Adminhtml\CustomerPrice;
 
+use Jeysmook\CustomerPrices\Controller\Adminhtml\CustomerPriceAction;
+use Jeysmook\CustomerPrices\Model\CustomerPrice\Locator;
 use Magento\Backend\App\Action;
 use Magento\Backend\Model\View\Result\Page;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterfaceFactory;
-use Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface;
-use Jeysmook\CustomerPrices\Controller\Adminhtml\CustomerPriceAction;
 
 /**
  * Edit the customer price entity
@@ -28,30 +27,22 @@ use Jeysmook\CustomerPrices\Controller\Adminhtml\CustomerPriceAction;
 class Edit extends CustomerPriceAction
 {
     /**
-     * @var CustomerPriceRepositoryInterface
+     * @var Locator
      */
-    private $customerPriceRepository;
-
-    /**
-     * @var CustomerPriceInterfaceFactory
-     */
-    private $customerPriceFactory;
+    private $locator;
 
     /**
      * Edit constructor
      *
      * @param Action\Context $context
-     * @param CustomerPriceRepositoryInterface $customerPriceRepository
-     * @param CustomerPriceInterfaceFactory $customerPriceFactory
+     * @param Locator $locator
      */
     public function __construct(
         Action\Context $context,
-        CustomerPriceRepositoryInterface $customerPriceRepository,
-        CustomerPriceInterfaceFactory $customerPriceFactory
+        Locator $locator
     ) {
         parent::__construct($context);
-        $this->customerPriceRepository = $customerPriceRepository;
-        $this->customerPriceFactory = $customerPriceFactory;
+        $this->locator = $locator;
     }
 
     /**
@@ -61,19 +52,19 @@ class Edit extends CustomerPriceAction
      */
     public function execute(): ResultInterface
     {
-        $customerId = (int)$this->getRequest()->getParam('item_id');
-        if ($customerId) {
-            try {
-                $this->customerPriceRepository->get($customerId);
-            } catch (NoSuchEntityException $exception) {
-                $this->messageManager->addErrorMessage(__('This customer price no longer exists.'));
-                $resultRedirect = $this->resultRedirectFactory->create();
-                $resultRedirect->setPath('*/*/');
-                return $resultRedirect;
-            }
+        $this->getMessageManager()->addNoticeMessage(
+            __('Please note that the customer price based on scope.')
+        );
+
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $customerPrice = $this->locator->getCustomerPrice();
+        if (!empty($this->getRequest()->getParam('item_id')) && !$customerPrice->getItemId()) {
+            $this->messageManager->addErrorMessage(__('This customer price no longer exists.'));
+            $resultRedirect->setPath('*/*/');
+            return $resultRedirect;
         }
 
-        $pageTitle = $customerId ? __('Edit') : __('New');
+        $pageTitle = $customerPrice->getItemId() ? __('Edit') : __('New');
         /** @var Page $resultPage */
         $resultPage = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
         $resultPage->setActiveMenu('Jeysmook_CustomerPrices::customer_price');

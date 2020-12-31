@@ -16,6 +16,14 @@
                     <item name="class" xsi:type="string">Jeysmook\CustomerPrices\Ui\Component\Form\CustomerPrice\Modifier\General</item>
                     <item name="sortOrder" xsi:type="number">10</item>
                 </item>
+                <item name="product" xsi:type="array">
+                    <item name="class" xsi:type="string">Jeysmook\CustomerPrices\Ui\Component\Form\CustomerPrice\Modifier\Product</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+                <item name="customer" xsi:type="array">
+                    <item name="class" xsi:type="string">Jeysmook\CustomerPrices\Ui\Component\Form\CustomerPrice\Modifier\Customer</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                </item>
             </argument>
         </arguments>
     </virtualType>
