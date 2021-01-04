@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Customer Prices for Magento 2
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Mview/etc/mview.xsd">
+    <view id="catalogsearch_fulltext" class="Magento\CatalogSearch\Model\Indexer\Mview\Action" group="indexer">
+        <subscriptions>
+            <table name="jeysmook_customer_price" entity_column="product_id"/>
+        </subscriptions>
+    </view>
+</config>
