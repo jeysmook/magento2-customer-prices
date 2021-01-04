@@ -8,7 +8,9 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Magento\Catalog\Model\ResourceModel\Product\Collection">
-        <plugin name="jeysmook_apply_customer_prices_to_collection_select" type="Jeysmook\CustomerPrices\Plugin\Model\ResourceModel\Product\CollectionPlugin" sortOrder="100"/>
+    <!-- Indexer and Cache -->
+    <type name="Magento\Framework\App\Http\Context">
+        <plugin name="jc_add_customer_context_variable" type="Jeysmook\CustomerPrices\Plugin\Framework\App\Http\ContextPlugin" sortOrder="10"/>
     </type>
+    <!-- Indexer and Cache -->
 </config>

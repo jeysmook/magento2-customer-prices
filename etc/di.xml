@@ -82,4 +82,14 @@
         </arguments>
     </type>
     <!-- Entity Manager -->
+
+    <!-- Indexer and Cache -->
+    <type name="Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice">
+        <plugin name="jc-re-index-after-save-customer-price" type="Jeysmook\CustomerPrices\Plugin\Model\ResourceModel\CustomerPrice\CustomerPricePlugin" sortOrder="10"/>
+    </type>
+
+    <type name="Magento\Framework\Pricing\Render\PriceBox">
+        <plugin name="jc-add-cache-tags-for-price-box" type="Jeysmook\CustomerPrices\Plugin\Framework\Pricing\Render\PriceBoxPlugin" sortOrder="10"/>
+    </type>
+    <!-- Indexer and Cache -->
 </config>
