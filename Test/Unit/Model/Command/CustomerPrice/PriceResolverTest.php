@@ -112,9 +112,10 @@ class PriceResolverTest extends TestCase
     public function dataProvider(): array
     {
         return [
+            // [customerId, websiteId, productId, qty, expectedValue]
             [1, 1, 1, 1, 10.1],
             [1, 2, 1, 2, 11.2],
-            [1, 3, 1, 3, 12.3],
+            [1, 3, 1, 3, 12.3]
         ];
     }
 }
