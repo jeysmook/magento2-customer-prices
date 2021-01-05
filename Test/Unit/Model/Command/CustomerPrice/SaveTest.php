@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace Jeysmook\CustomerPrices\Test\Unit\Model\Command;
 
 use Exception;
-use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface;
 use Jeysmook\CustomerPrices\Model\Command\CustomerPrice\Save;
 use Jeysmook\CustomerPrices\Model\CustomerPrice;
 use Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice as CustomerPriceResource;
