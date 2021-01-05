@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Jeysmook\CustomerPrices\Model\Command;
+namespace Jeysmook\CustomerPrices\Model\Command\CustomerPrice;
 
 use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface;
 use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterfaceFactory;
@@ -19,12 +19,12 @@ use Magento\Framework\Exception\NoSuchEntityException;
 /**
  * Get the customer price by ID
  */
-class GetCustomerPriceById
+class GetById
 {
     /**
      * @var CustomerPriceInterfaceFactory
      */
-    private $customerPriceFactory;
+    private $entityFactory;
 
     /**
      * @var CustomerPrice
@@ -32,16 +32,16 @@ class GetCustomerPriceById
     private $resource;
 
     /**
-     * GetCustomerPriceById constructor
+     * GetById constructor
      *
-     * @param CustomerPriceInterfaceFactory $customerPriceFactory
+     * @param CustomerPriceInterfaceFactory $entityFactory
      * @param CustomerPrice $resource
      */
     public function __construct(
-        CustomerPriceInterfaceFactory $customerPriceFactory,
+        CustomerPriceInterfaceFactory $entityFactory,
         CustomerPrice $resource
     ) {
-        $this->customerPriceFactory = $customerPriceFactory;
+        $this->entityFactory = $entityFactory;
         $this->resource = $resource;
     }
 
@@ -54,11 +54,11 @@ class GetCustomerPriceById
      */
     public function execute(int $itemId): CustomerPriceInterface
     {
-        $customerPrice = $this->customerPriceFactory->create();
-        $this->resource->load($customerPrice, $itemId);
-        if (!$customerPrice->getId()) {
+        $entity = $this->entityFactory->create();
+        $this->resource->load($entity, $itemId);
+        if (!$entity->getId()) {
             throw new NoSuchEntityException();
         }
-        return $customerPrice;
+        return $entity;
     }
 }

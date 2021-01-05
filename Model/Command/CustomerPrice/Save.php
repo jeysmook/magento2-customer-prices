@@ -9,17 +9,17 @@
 
 declare(strict_types=1);
 
-namespace Jeysmook\CustomerPrices\Model\Command;
+namespace Jeysmook\CustomerPrices\Model\Command\CustomerPrice;
 
 use Exception;
-use Magento\Framework\Exception\CouldNotSaveException;
 use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface;
 use Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice;
+use Magento\Framework\Exception\CouldNotSaveException;
 
 /**
  * Save the customer price
  */
-class SaveCustomerPrice
+class Save
 {
     /**
      * @var CustomerPrice
@@ -27,7 +27,7 @@ class SaveCustomerPrice
     private $resource;
 
     /**
-     * SaveCustomerPrice constructor
+     * Save constructor
      *
      * @param CustomerPrice $resource
      */
@@ -54,6 +54,6 @@ class SaveCustomerPrice
                 $exception
             );
         }
-        return (int)$request->getCustomerId();
+        return (int)$request->getItemId();
     }
 }

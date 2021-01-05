@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Customer Prices for Magento 2
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/customer-price/:itemId" method="GET">
+        <service class="Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface" method="get"/>
+        <resources>
+            <resource ref="Jeysmook_CustomerPrices::webapi"/>
+        </resources>
+    </route>
+    <route url="/V1/customer-price" method="POST">
+        <service class="Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Jeysmook_CustomerPrices::webapi"/>
+        </resources>
+    </route>
+    <route url="/V1/customer-price/:itemId" method="PUT">
+        <service class="Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Jeysmook_CustomerPrices::webapi"/>
+        </resources>
+    </route>
+    <route url="/V1/customer-price/:itemId" method="DELETE">
+        <service class="Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="Jeysmook_CustomerPrices::webapi"/>
+        </resources>
+    </route>
+    <route url="/V1/customer-price/search" method="GET">
+        <service class="Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Jeysmook_CustomerPrices::webapi"/>
+        </resources>
+    </route>
+</routes>

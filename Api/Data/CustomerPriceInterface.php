@@ -27,6 +27,7 @@ interface CustomerPriceInterface
      * Set customer price ID
      *
      * @param int $value
+     * @return void
      */
     public function setItemId(int $value): void;
 
@@ -41,6 +42,7 @@ interface CustomerPriceInterface
      * Set product ID
      *
      * @param int $value
+     * @return void
      */
     public function setProductId(int $value): void;
 
@@ -55,6 +57,7 @@ interface CustomerPriceInterface
      * Set customer ID
      *
      * @param int $value
+     * @return void
      */
     public function setCustomerId(int $value): void;
 
@@ -69,6 +72,7 @@ interface CustomerPriceInterface
      * Set price
      *
      * @param float $value
+     * @return void
      */
     public function setPrice(float $value): void;
 
@@ -83,6 +87,7 @@ interface CustomerPriceInterface
      * Set quantity
      *
      * @param float $value
+     * @return void
      */
     public function setQty(float $value): void;
 
@@ -97,6 +102,7 @@ interface CustomerPriceInterface
      * Set website ID
      *
      * @param int $value
+     * @return void
      */
     public function setWebsiteId(int $value): void;
 
@@ -111,6 +117,7 @@ interface CustomerPriceInterface
      * Set created at
      *
      * @param string $value
+     * @return void
      */
     public function setCreatedAt(string $value): void;
 
@@ -125,6 +132,7 @@ interface CustomerPriceInterface
      * Set updated at
      *
      * @param string $value
+     * @return void
      */
     public function setUpdatedAt(string $value): void;
 }

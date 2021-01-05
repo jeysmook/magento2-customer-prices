@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Jeysmook\CustomerPrices\Api;
 
+use Magento\Framework\Api\SearchCriteriaInterface;
+
 /**
  * The repository of the customer price entity
  */
@@ -51,4 +53,12 @@ interface CustomerPriceRepositoryInterface
      * @throws \Magento\Framework\Exception\CouldNotDeleteException
      */
     public function delete(Data\CustomerPriceInterface $customerPrice): void;
+
+    /**
+     * Get a list of customer prices
+     *
+     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
+     * @return \Jeysmook\CustomerPrices\Api\Data\CustomerPriceSearchResultsInterface
+     */
+    public function getList(SearchCriteriaInterface $searchCriteria): Data\CustomerPriceSearchResultsInterface;
 }

@@ -9,45 +9,53 @@
 
 declare(strict_types=1);
 
-namespace Jeysmook\CustomerPrices\Model\Command;
+namespace Jeysmook\CustomerPrices\Model\Command\CustomerPrice;
 
 use Exception;
 use Magento\Framework\Exception\CouldNotDeleteException;
-use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface;
-use Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice;
 
 /**
- * Delete the customer price
+ * Delete the customer price by ID
  */
-class DeleteCustomerPrice
+class DeleteById
 {
     /**
-     * @var CustomerPrice
+     * @var GetById
      */
-    private $resource;
+    private $getById;
 
     /**
-     * DeleteCustomerPrice constructor
+     * @var Delete
+     */
+    private $delete;
+
+    /**
+     * DeleteById constructor
      *
-     * @param CustomerPrice $resource
+     * @param GetById $getById
+     * @param Delete $delete
      */
     public function __construct(
-        CustomerPrice $resource
+        GetById $getById,
+        Delete $delete
     ) {
-        $this->resource = $resource;
+        $this->getById = $getById;
+        $this->delete = $delete;
     }
 
     /**
-     * Delete the customer price
+     * Delete the customer price by ID
      *
-     * @param CustomerPriceInterface $customerPrice
+     * @param int $itemId
      * @return void
      * @throws CouldNotDeleteException
      */
-    public function execute(CustomerPriceInterface $customerPrice): void
+    public function execute(int $itemId): void
     {
         try {
-            $this->resource->delete($customerPrice);
+            $this->delete->execute(
+                $this->getById->execute($itemId)
+            );
         } catch (Exception $exception) {
             throw new CouldNotDeleteException(
                 __('Could not delete the customer price: %error', ['error' => $exception->getMessage()]),

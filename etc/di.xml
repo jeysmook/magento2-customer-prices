@@ -9,6 +9,7 @@
  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface" type="Jeysmook\CustomerPrices\Model\CustomerPrice"/>
+    <preference for="Jeysmook\CustomerPrices\Api\Data\CustomerPriceSearchResultsInterface" type="Jeysmook\CustomerPrices\Model\CustomerPriceSearchResults"/>
     <preference for="Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface" type="Jeysmook\CustomerPrices\Model\CustomerPriceRepository"/>
     <preference for="Jeysmook\CustomerPrices\Api\CustomerResolverInterface" type="Jeysmook\CustomerPrices\Model\Command\Frontend\CustomerResolver"/>
     <preference for="Jeysmook\CustomerPrices\Api\CustomerProviderInterface" type="Jeysmook\CustomerPrices\Model\Command\CustomerProvider"/>
@@ -90,6 +91,10 @@
 
     <type name="Magento\Framework\Pricing\Render\PriceBox">
         <plugin name="jc-add-cache-tags-for-price-box" type="Jeysmook\CustomerPrices\Plugin\Framework\Pricing\Render\PriceBoxPlugin" sortOrder="10"/>
+    </type>
+
+    <type name="Magento\CatalogSearch\Model\Indexer\Mview\Action">
+        <plugin name="jc-flush-cache-after-reindex" type="Jeysmook\CustomerPrices\Plugin\Model\Indexer\Mview\ActionPlugin" sortOrder="10"/>
     </type>
     <!-- Indexer and Cache -->
 </config>

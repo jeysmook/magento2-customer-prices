@@ -98,15 +98,11 @@ class CustomerPricePlugin
         CustomerPrice $result,
         CustomerPriceInterface $entity
     ): CustomerPrice {
-        // clean up the product cache
-        $this->flushCacheByTagsAfterSave(
+        $this->flushCacheAfterSave(
             $customerPrice,
             $this->productFactory->create()
                 ->setId($entity->getProductId())
         );
-
-        // clean up full page cache
-        $this->cacheTypeList->cleanType(Type::TYPE_IDENTIFIER);
         return $result;
     }
 
@@ -141,14 +137,10 @@ class CustomerPricePlugin
         CustomerPrice $result,
         CustomerPriceInterface $entity
     ): CustomerPrice {
-        // clean up the product cache
-        $this->flushCacheByTagsAfterDelete(
+        $this->flushCacheAfterDelete(
             $customerPrice,
             $this->productFactory->create()->setId($entity->getProductId())
         );
-
-        // clean up full page cache
-        $this->cacheTypeList->cleanType(Type::TYPE_IDENTIFIER);
         return $result;
     }
 
@@ -167,28 +159,52 @@ class CustomerPricePlugin
     }
 
     /**
-     * Flush cache by tags after saving the entity
+     * Flush cache after saving the entity
      *
      * @param AbstractResource $resource
      * @param AbstractModel $entity
      */
-    private function flushCacheByTagsAfterSave(
+    private function flushCacheAfterSave(
         AbstractResource $resource,
         AbstractModel $entity
     ): void {
+        // clean up the entity cache by tags
         $this->flushCacheByTags->afterSave($resource, $resource, $entity);
+
+        if (!$this->isScheduled(Fulltext::INDEXER_ID)) {
+            // clean up full page cache
+            $this->cacheTypeList->cleanType(Type::TYPE_IDENTIFIER);
+        }
     }
 
     /**
-     * Flush cache by tags after deleting the entity
+     * Flush cache after deleting the entity
      *
      * @param AbstractResource $resource
      * @param AbstractModel $entity
      */
-    private function flushCacheByTagsAfterDelete(
+    private function flushCacheAfterDelete(
         AbstractResource $resource,
         AbstractModel $entity
     ): void {
+        // clean up the entity cache by tags
         $this->flushCacheByTags->afterDelete($resource, $resource, $entity);
+
+        if (!$this->isScheduled(Fulltext::INDEXER_ID)) {
+            // clean up full page cache
+            $this->cacheTypeList->cleanType(Type::TYPE_IDENTIFIER);
+        }
+    }
+
+    /**
+     * Is scheduled the indexer?
+     *
+     * @param string $indexer
+     * @return bool
+     */
+    public function isScheduled(string $indexer): bool
+    {
+        $indexer = $this->indexerRegistry->get($indexer);
+        return $indexer->isScheduled();
     }
 }

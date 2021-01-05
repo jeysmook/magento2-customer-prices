@@ -14,6 +14,7 @@
                 <resource id="Jeysmook_CustomerPrices::base" title="Jeysmook Customer Prices" sortOrder="100">
                     <resource id="Jeysmook_CustomerPrices::config" title="Module Configuration" sortOrder="10"/>
                     <resource id="Jeysmook_CustomerPrices::customer_price" title="Customer Prices" sortOrder="20"/>
+                    <resource id="Jeysmook_CustomerPrices::webapi" title="Customer Prices Webapi" sortOrder="30"/>
                 </resource>
             </resource>
         </resources>

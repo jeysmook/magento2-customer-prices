@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Jeysmook\CustomerPrices\Observer;
 
 use Jeysmook\CustomerPrices\Api\CustomerProviderInterface;
-use Jeysmook\CustomerPrices\Model\Command\CustomerPriceResolver;
+use Jeysmook\CustomerPrices\Model\Command\CustomerPrice\Resolver;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
@@ -30,7 +30,7 @@ class ProcessFinalPriceObserver implements ObserverInterface
     private $customerProvider;
 
     /**
-     * @var CustomerPriceResolver
+     * @var Resolver
      */
     private $customerPriceResolver;
 
@@ -38,11 +38,11 @@ class ProcessFinalPriceObserver implements ObserverInterface
      * ProcessFinalPriceObserver constructor
      *
      * @param CustomerProviderInterface $customerProvider
-     * @param CustomerPriceResolver $customerPriceResolver
+     * @param Resolver $customerPriceResolver
      */
     public function __construct(
         CustomerProviderInterface $customerProvider,
-        CustomerPriceResolver $customerPriceResolver
+        Resolver $customerPriceResolver
     ) {
         $this->customerProvider = $customerProvider;
         $this->customerPriceResolver = $customerPriceResolver;

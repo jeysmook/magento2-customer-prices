@@ -14,8 +14,8 @@ namespace Jeysmook\CustomerPrices\Model\CustomerPrice;
 use Exception;
 use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface;
 use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterfaceFactory;
+use Jeysmook\CustomerPrices\Model\Command\CustomerPrice\GetById;
 use Jeysmook\CustomerPrices\Model\Command\GetCustomerByCustomerPriceId;
-use Jeysmook\CustomerPrices\Model\Command\GetCustomerPriceById;
 use Jeysmook\CustomerPrices\Model\Command\GetProductByCustomerPriceId;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
@@ -36,7 +36,7 @@ use Magento\Store\Model\StoreManagerInterface;
 class Locator
 {
     /**
-     * @var GetCustomerPriceById
+     * @var GetById
      */
     private $getCustomerPriceById;
 
@@ -83,7 +83,7 @@ class Locator
     /**
      * Locator constructor
      *
-     * @param GetCustomerPriceById $getCustomerPriceById
+     * @param GetById $getCustomerPriceById
      * @param CustomerPriceInterfaceFactory $customerPriceFactory
      * @param RequestInterface $request
      * @param StoreManagerInterface $storeManager
@@ -93,7 +93,7 @@ class Locator
      * @param GetCustomerByCustomerPriceId $getCustomerByCustomerPriceId
      */
     public function __construct(
-        GetCustomerPriceById $getCustomerPriceById,
+        GetById $getCustomerPriceById,
         CustomerPriceInterfaceFactory $customerPriceFactory,
         RequestInterface $request,
         StoreManagerInterface $storeManager,

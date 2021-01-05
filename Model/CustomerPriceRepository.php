@@ -13,10 +13,12 @@ namespace Jeysmook\CustomerPrices\Model;
 
 use Jeysmook\CustomerPrices\Api\CustomerPriceRepositoryInterface;
 use Jeysmook\CustomerPrices\Api\Data;
-use Jeysmook\CustomerPrices\Model\Command\DeleteCustomerPrice;
-use Jeysmook\CustomerPrices\Model\Command\DeleteCustomerPriceById;
-use Jeysmook\CustomerPrices\Model\Command\GetCustomerPriceById;
-use Jeysmook\CustomerPrices\Model\Command\SaveCustomerPrice;
+use Jeysmook\CustomerPrices\Model\Command\CustomerPrice\Delete;
+use Jeysmook\CustomerPrices\Model\Command\CustomerPrice\DeleteById;
+use Jeysmook\CustomerPrices\Model\Command\CustomerPrice\GetById;
+use Jeysmook\CustomerPrices\Model\Command\CustomerPrice\GetList;
+use Jeysmook\CustomerPrices\Model\Command\CustomerPrice\Save;
+use Magento\Framework\Api\SearchCriteriaInterface;
 
 /**
  * The repository of the customer price entity
@@ -26,43 +28,51 @@ use Jeysmook\CustomerPrices\Model\Command\SaveCustomerPrice;
 class CustomerPriceRepository implements CustomerPriceRepositoryInterface
 {
     /**
-     * @var GetCustomerPriceById
+     * @var GetById
      */
-    private $getCustomerPriceById;
+    private $getById;
 
     /**
-     * @var SaveCustomerPrice
+     * @var Save
      */
-    private $saveCustomerPrice;
+    private $save;
 
     /**
-     * @var DeleteCustomerPriceById
+     * @var DeleteById
      */
-    private $deleteCustomerPriceById;
+    private $deleteById;
 
     /**
-     * @var DeleteCustomerPrice
+     * @var Delete
      */
-    private $deleteCustomerPrice;
+    private $delete;
+
+    /**
+     * @var GetList
+     */
+    private $getList;
 
     /**
      * CustomerPriceRepository constructor
      *
-     * @param GetCustomerPriceById $getCustomerPriceById
-     * @param SaveCustomerPrice $saveCustomerPrice
-     * @param DeleteCustomerPriceById $deleteCustomerPriceById
-     * @param DeleteCustomerPrice $deleteCustomerPrice
+     * @param GetById $getById
+     * @param Save $save
+     * @param DeleteById $deleteById
+     * @param Delete $delete
+     * @param GetList $getList
      */
     public function __construct(
-        GetCustomerPriceById $getCustomerPriceById,
-        SaveCustomerPrice $saveCustomerPrice,
-        DeleteCustomerPriceById $deleteCustomerPriceById,
-        DeleteCustomerPrice $deleteCustomerPrice
+        GetById $getById,
+        Save $save,
+        DeleteById $deleteById,
+        Delete $delete,
+        GetList $getList
     ) {
-        $this->getCustomerPriceById = $getCustomerPriceById;
-        $this->saveCustomerPrice = $saveCustomerPrice;
-        $this->deleteCustomerPriceById = $deleteCustomerPriceById;
-        $this->deleteCustomerPrice = $deleteCustomerPrice;
+        $this->getById = $getById;
+        $this->save = $save;
+        $this->deleteById = $deleteById;
+        $this->delete = $delete;
+        $this->getList = $getList;
     }
 
     /**
@@ -70,7 +80,7 @@ class CustomerPriceRepository implements CustomerPriceRepositoryInterface
      */
     public function get(int $itemId): Data\CustomerPriceInterface
     {
-        return $this->getCustomerPriceById->execute($itemId);
+        return $this->getById->execute($itemId);
     }
 
     /**
@@ -78,7 +88,7 @@ class CustomerPriceRepository implements CustomerPriceRepositoryInterface
      */
     public function save(Data\CustomerPriceInterface $customerPrice): int
     {
-        return $this->saveCustomerPrice->execute($customerPrice);
+        return $this->save->execute($customerPrice);
     }
 
     /**
@@ -86,7 +96,7 @@ class CustomerPriceRepository implements CustomerPriceRepositoryInterface
      */
     public function deleteById(int $itemId): void
     {
-        $this->deleteCustomerPriceById->execute($itemId);
+        $this->deleteById->execute($itemId);
     }
 
     /**
@@ -94,6 +104,14 @@ class CustomerPriceRepository implements CustomerPriceRepositoryInterface
      */
     public function delete(Data\CustomerPriceInterface $customerPrice): void
     {
-        $this->deleteCustomerPrice->execute($customerPrice);
+        $this->delete->execute($customerPrice);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getList(SearchCriteriaInterface $searchCriteria): Data\CustomerPriceSearchResultsInterface
+    {
+        return $this->getList->execute($searchCriteria);
     }
 }

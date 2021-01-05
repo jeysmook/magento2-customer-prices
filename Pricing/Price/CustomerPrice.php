@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Jeysmook\CustomerPrices\Pricing\Price;
 
 use Jeysmook\CustomerPrices\Api\CustomerProviderInterface;
-use Jeysmook\CustomerPrices\Model\Command\CustomerPriceResolver;
+use Jeysmook\CustomerPrices\Model\Command\CustomerPrice\Resolver;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Pricing\Adjustment\CalculatorInterface;
 use Magento\Framework\Pricing\Price\AbstractPrice;
@@ -38,7 +38,7 @@ class CustomerPrice extends AbstractPrice implements BasePriceProviderInterface
     private $customerProvider;
 
     /**
-     * @var CustomerPriceResolver
+     * @var Resolver
      */
     private $customerPriceResolver;
 
@@ -50,7 +50,7 @@ class CustomerPrice extends AbstractPrice implements BasePriceProviderInterface
      * @param CalculatorInterface $calculator
      * @param PriceCurrencyInterface $priceCurrency
      * @param CustomerProviderInterface $customerProvider
-     * @param CustomerPriceResolver $customerPriceResolver
+     * @param Resolver $customerPriceResolver
      */
     public function __construct(
         SaleableInterface $saleableItem,
@@ -58,7 +58,7 @@ class CustomerPrice extends AbstractPrice implements BasePriceProviderInterface
         CalculatorInterface $calculator,
         PriceCurrencyInterface $priceCurrency,
         CustomerProviderInterface $customerProvider,
-        CustomerPriceResolver $customerPriceResolver
+        Resolver $customerPriceResolver
     ) {
         parent::__construct($saleableItem, $quantity, $calculator, $priceCurrency);
 
