@@ -9,17 +9,14 @@
 
 declare(strict_types=1);
 
-namespace Jeysmook\CustomerPrices\Model\Command;
+namespace Jeysmook\CustomerPrices\Model\Command\CustomerPrice;
 
-use Exception;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface;
 use Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice;
 
 /**
  * Resolving the customer price for the product
  */
-class CustomerPriceResolver
+class PriceResolver
 {
     /**
      * @var CustomerPrice
@@ -32,7 +29,7 @@ class CustomerPriceResolver
     private $cache = [];
 
     /**
-     * CustomerPriceFieldNameResolver constructor
+     * PriceResolver constructor
      *
      * @param CustomerPrice $resource
      */
@@ -70,7 +67,7 @@ class CustomerPriceResolver
         $select->where('qty <= ?', max($qty, 1));
         $select->order('qty DESC');
         $select->limit(1);
-        $price = $this->resource->getConnection()->fetchOne($select);
-        return $this->cache[$cacheKey] = $price > 0 ? (float)$price : null;
+        $price = (string)$this->resource->getConnection()->fetchOne($select);
+        return $this->cache[$cacheKey] = $price !== '' ? (float)$price : null;
     }
 }

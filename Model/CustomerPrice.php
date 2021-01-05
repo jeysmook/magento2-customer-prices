@@ -27,14 +27,14 @@ class CustomerPrice extends AbstractModel implements CustomerPriceInterface
     /**#@+
      * Constants for keys of data array. Identical to the name of the getter in snake case
      */
-    private const ID = ResourceModel\CustomerPrice::PK;
-    private const PRODUCT_ID = 'product_id';
-    private const CUSTOMER_ID = 'customer_id';
-    private const PRICE = 'price';
-    private const QTY = 'qty';
-    private const WEBSITE_ID = 'website_id';
-    private const CREATED_AT = 'created_at';
-    private const UPDATED_AT = 'updated_at';
+    public const ID = ResourceModel\CustomerPrice::PK;
+    public const PRODUCT_ID = 'product_id';
+    public const CUSTOMER_ID = 'customer_id';
+    public const PRICE = 'price';
+    public const QTY = 'qty';
+    public const WEBSITE_ID = 'website_id';
+    public const CREATED_AT = 'created_at';
+    public const UPDATED_AT = 'updated_at';
     /**#@-*/
 
     /**

@@ -61,7 +61,7 @@ class CustomerPrice extends AbstractDb
      *
      * @return string
      */
-    public function getMainTable()
+    public function getMainTable(): string
     {
         return $this->getTable(self::TABLE_NAME);
     }
