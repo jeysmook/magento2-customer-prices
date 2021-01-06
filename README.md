@@ -1,5 +1,5 @@
 # Welcome
-Welcome to Customer Price installation! We're glad you chose to install Magento 2, a cutting-edge, feature-rich eCommerce solution that gets results.
+Welcome to the Customer Price installation! We're glad you chose to install the Customer Price. This module provides prices for customers individually.
 
 # Requirements
 1. [Installed Magento 2 System](https://devdocs.magento.com/guides/v2.3/install-gde/bk-install-guide.html)
