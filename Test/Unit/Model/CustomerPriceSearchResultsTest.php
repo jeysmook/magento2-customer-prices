@@ -43,7 +43,7 @@ class CustomerPriceSearchResultsTest extends TestCase
             ->getMock();
         $this->entityFactory = $this->getMockBuilder(CustomerPriceInterfaceFactory::class)
             ->disableOriginalConstructor()
-            ->setMethods(['create'])
+            ->onlyMethods(['create'])
             ->getMock();
         $this->entityFactory->expects($this->any())
             ->method('create')
