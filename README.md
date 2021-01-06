@@ -6,7 +6,7 @@ Welcome to the Customer Prices installation! We're glad you chose to install the
 2. [Magento System Requirements](https://devdocs.magento.com/guides/v2.4/install-gde/system-requirements.html)
 
 # Documentation
-* [WIKI](https://github.com/jeysmook/magento2-customer-prices/wiki)
+* [wiki](https://github.com/jeysmook/magento2-customer-prices/wiki)
 * [Installation Guide](https://github.com/jeysmook/magento2-customer-prices/wiki/Installation-Guide)
 
 # License
