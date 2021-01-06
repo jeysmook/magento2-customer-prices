@@ -46,7 +46,7 @@ class CustomerPrice extends AbstractPrice implements BasePriceProviderInterface
      * CustomerPrice constructor
      *
      * @param SaleableInterface $saleableItem
-     * @param $quantity
+     * @param float $quantity
      * @param CalculatorInterface $calculator
      * @param PriceCurrencyInterface $priceCurrency
      * @param CustomerProviderInterface $customerProvider
@@ -54,7 +54,7 @@ class CustomerPrice extends AbstractPrice implements BasePriceProviderInterface
      */
     public function __construct(
         SaleableInterface $saleableItem,
-        $quantity,
+        float $quantity,
         CalculatorInterface $calculator,
         PriceCurrencyInterface $priceCurrency,
         CustomerProviderInterface $customerProvider,

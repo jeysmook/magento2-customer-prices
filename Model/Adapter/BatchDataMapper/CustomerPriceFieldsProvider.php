@@ -85,7 +85,7 @@ class CustomerPriceFieldsProvider implements AdditionalFieldsProviderInterface
     /**
      * @inheritdoc
      */
-    public function getFields(array $productIds, $storeId)
+    public function getFields(array $productIds, $storeId): array
     {
         $fields = [];
         if (!$this->dataProvider->getSearchableAttribute('price')) {

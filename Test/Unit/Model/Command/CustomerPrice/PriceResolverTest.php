@@ -76,13 +76,12 @@ class PriceResolverTest extends TestCase
     }
 
     /**
+     * @dataProvider dataProvider
      * @param int $customerId
      * @param int $websiteId
      * @param int $productId
      * @param float $qty
      * @param float $expectedValue
-     * @dataProvider dataProvider
-     *
      * @see PriceResolver::resolve()
      */
     public function testResolve(

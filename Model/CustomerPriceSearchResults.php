@@ -16,8 +16,6 @@ use Magento\Framework\Api\SearchResults;
 
 /**
  * The repository of the customer price entity
- *
- * @SuppressWarnings(PHPMD.LongVariable)
  */
 class CustomerPriceSearchResults extends SearchResults implements CustomerPriceSearchResultsInterface
 {
