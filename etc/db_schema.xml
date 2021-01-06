@@ -38,5 +38,11 @@
         <index referenceId="JEYSMOOK_CUSTOMER_PRICE_CUSTOMER_ID" indexType="btree">
             <column name="customer_id"/>
         </index>
+        <index referenceId="JEYSMOOK_CUSTOMER_PRICE_PRODUCT_ID_CUSTOMER_ID_QTY_WEBSITE_ID" indexType="btree">
+            <column name="product_id"/>
+            <column name="customer_id"/>
+            <column name="qty"/>
+            <column name="website_id"/>
+        </index>
     </table>
 </schema>
