@@ -85,6 +85,15 @@
     <!-- Entity Manager -->
 
     <!-- Indexer and Cache -->
+    <type name="Jeysmook\CustomerPrices\Model\Command\FlushCacheByTags">
+        <arguments>
+            <argument name="cacheList" xsi:type="array">
+                <item name="block_html" xsi:type="const">Magento\Framework\App\Cache\Type\Block::TYPE_IDENTIFIER</item>
+                <item name="collections" xsi:type="const">Magento\Framework\App\Cache\Type\Collection::TYPE_IDENTIFIER</item>
+            </argument>
+        </arguments>
+    </type>
+
     <type name="Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice">
         <plugin name="jc-re-index-after-save-customer-price" type="Jeysmook\CustomerPrices\Plugin\Model\ResourceModel\CustomerPrice\CustomerPricePlugin" sortOrder="10"/>
     </type>

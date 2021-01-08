@@ -12,10 +12,10 @@ declare(strict_types=1);
 namespace Jeysmook\CustomerPrices\Plugin\Model\ResourceModel\CustomerPrice;
 
 use Jeysmook\CustomerPrices\Api\Data\CustomerPriceInterface;
+use Jeysmook\CustomerPrices\Model\Command\FlushCacheByTags;
 use Jeysmook\CustomerPrices\Model\ResourceModel\CustomerPrice;
 use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\CatalogSearch\Model\Indexer\Fulltext;
-use Magento\Framework\App\Cache\FlushCacheByTags;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\Indexer\IndexerRegistry;
 use Magento\Framework\Model\AbstractModel;
@@ -92,14 +92,15 @@ class CustomerPricePlugin
      * @param CustomerPriceInterface $entity
      * @return CustomerPrice
      * @see CustomerPrice::save()
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function afterSave(
         CustomerPrice $customerPrice,
         CustomerPrice $result,
         CustomerPriceInterface $entity
     ): CustomerPrice {
-        $this->flushCacheAfterSave(
-            $customerPrice,
+        $this->flushCacheForEntity(
             $this->productFactory->create()
                 ->setId($entity->getProductId())
         );
@@ -131,14 +132,15 @@ class CustomerPricePlugin
      * @param CustomerPriceInterface $entity
      * @return CustomerPrice
      * @see CustomerPrice::delete()
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function afterDelete(
         CustomerPrice $customerPrice,
         CustomerPrice $result,
         CustomerPriceInterface $entity
     ): CustomerPrice {
-        $this->flushCacheAfterDelete(
-            $customerPrice,
+        $this->flushCacheForEntity(
             $this->productFactory->create()->setId($entity->getProductId())
         );
         return $result;
@@ -159,36 +161,14 @@ class CustomerPricePlugin
     }
 
     /**
-     * Flush cache after saving the entity
+     * Flush cache for the entity
      *
-     * @param AbstractResource $resource
      * @param AbstractModel $entity
      */
-    private function flushCacheAfterSave(
-        AbstractResource $resource,
-        AbstractModel $entity
-    ): void {
+    private function flushCacheForEntity(AbstractModel $entity): void
+    {
         // clean up the entity cache by tags
-        $this->flushCacheByTags->afterSave($resource, $resource, $entity);
-
-        if (!$this->isScheduled(Fulltext::INDEXER_ID)) {
-            // clean up full page cache
-            $this->cacheTypeList->cleanType(Type::TYPE_IDENTIFIER);
-        }
-    }
-
-    /**
-     * Flush cache after deleting the entity
-     *
-     * @param AbstractResource $resource
-     * @param AbstractModel $entity
-     */
-    private function flushCacheAfterDelete(
-        AbstractResource $resource,
-        AbstractModel $entity
-    ): void {
-        // clean up the entity cache by tags
-        $this->flushCacheByTags->afterDelete($resource, $resource, $entity);
+        $this->flushCacheByTags->execute($entity);
 
         if (!$this->isScheduled(Fulltext::INDEXER_ID)) {
             // clean up full page cache
