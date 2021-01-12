@@ -8,6 +8,7 @@ Welcome to the Customer Prices installation! We're glad you chose to install the
 # Documentation
 * [wiki](https://github.com/jeysmook/magento2-customer-prices/wiki)
 * [Installation Guide](https://github.com/jeysmook/magento2-customer-prices/wiki/Installation-Guide)
+* [User Guide](https://github.com/jeysmook/magento2-customer-prices/wiki/User-Guide)
 
 # License
 [Open Software License (OSL 3.0)](https://opensource.org/licenses/osl-3.0.php). Please see LICENSE.txt for the full text of the OSL 3.0 license.
