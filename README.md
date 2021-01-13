@@ -1,5 +1,8 @@
 # Welcome
-Welcome to the Customer Prices installation! We're glad you chose to install the Customer Prices. This module provides prices for customers individually.
+Welcome to the Customer Prices installation! This module provides prices for customers individually. If you want to add product prices for customers you can use this module.
+
+# Builds Status
+[![Magento 2.4.1 Actions Status](https://github.com/jeysmook/magento2-customer-prices/workflows/magento241/badge.svg)](https://github.com/jeysmook/magento2-customer-prices/actions)
 
 # Requirements
 1. [Installed Magento 2 System](https://devdocs.magento.com/guides/v2.4/install-gde/bk-install-guide.html)
