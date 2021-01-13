@@ -64,6 +64,7 @@ class PriceResolver
         $select->where('product_id = ?', $productId);
         $select->where('customer_id = ?', $customerId);
         $select->where('qty <= ?', max($qty, 1));
+        $select->where('qty != ?', 0);
         $select->where('website_id = ?', $websiteId);
         $select->order('qty DESC');
         $select->limit(1);
