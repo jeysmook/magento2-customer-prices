@@ -1,3 +1,5 @@
+# Deprecated. Please see the new repository: https://github.com/epuzzle/magento2-customer-price
+
 # Welcome
 Welcome to the Customer Prices installation! This module provides prices for customers individually. If you want to add product prices for customers you can use this module.
 
